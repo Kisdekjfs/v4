@@ -7,11 +7,21 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    /* Добавляем фоновое изображение */
-    background-image: url('https://gymnasium42.edu-penza.ru/documents/image.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    /* Множественные фоны для создания эффекта заднего плана */
+    background-image: 
+      url('https://gymnasium42.edu-penza.ru/documents/image.png'),
+      url('https://gymnasium42.edu-penza.ru/documents/image.png'),
+      url('https://gymnasium42.edu-penza.ru/documents/image.png');
+    background-size: 
+      100px, /* размер для первой картинки */
+      80px,  /* размер для второй */
+      60px;  /* размер для третьей */
+    background-position: 
+      top left,
+      center,
+      bottom right;
+    background-repeat: repeat;
+    background-color: #f0f0f0; /* фон на случай, если изображения не заполняют полностью */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,6 +46,7 @@
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    z-index: 10; /* чтобы было поверх фона */
   }
 
   /* Визуальный эффект открытия (можно расширить) */
@@ -63,6 +74,7 @@
      flex-direction:flex-column; 
      align-items:center; 
      justify-content:center; 
+     z-index:11; /* поверх конверта и фона */
 }
 
  /* Показать лист */
@@ -82,12 +94,21 @@
 
  /* Удалена фотография */
 
- /* Кнопки для вариантов ответа */
+ /* Варианты ответа — перемещены ниже блока с текстом и с отступом */
+ .question-container {
+   position:absolute; /* чтобы располагать ниже текста и не мешать ему при открытии */
+   bottom:-80px; /* чуть ниже листа при открытии (можно регулировать) */
+   width:auto;
+   display:flex; 
+   justify-content:center; 
+   width:auto; 
+   margin-top:20px; 
+   z-index:12; /* чтобы быть поверх всего при необходимости */
+ }
+
  .buttons {
    display:flex; 
    gap:15px; 
-   justify-content:center; 
-   margin-top:20px; 
  }
 
  button {
@@ -123,8 +144,8 @@
  <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
 </div>
 
-<!-- Лист с вопросом и ответами -->
-<div class="letter" id="questionSheet">
+<!-- Вопрос и кнопки — перемещены ниже -->
+<div class="question-container" id="questionContainer">
  <p>Вы будете присутствовать?</p>
  <div class="buttons">
    <button id="yesBtn">Да</button>
@@ -135,7 +156,7 @@
 <script>
 const envelope = document.getElementById('envelope');
 const letterText = document.getElementById('letterText');
-const questionSheet = document.getElementById('questionSheet');
+const questionContainer = document.getElementById('questionContainer');
 
 const letterDuration = 1000;
 
@@ -149,7 +170,7 @@ envelope.addEventListener('click', () => {
      letterText.classList.add('show');
      
      setTimeout(() => {
-       questionSheet.classList.add('show');
+       questionContainer.classList.add('show');
      }, letterDuration *2);
      
  }, letterDuration);
