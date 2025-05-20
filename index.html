@@ -67,9 +67,6 @@ button:hover {
   height:100%;
   position:absolute;
   top:0; left:0;
-  border-radius:10px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.3);
-  
 }
 .envelope-front, .envelope-flap {
   position:absolute;
@@ -83,7 +80,6 @@ button:hover {
 }
 .envelope-flap {
   background:#f5deb3; /* цвет крышки */
-  
 }
 /* Анимация открытия конверта */
 .envelope.open .envelope-flap {
@@ -96,7 +92,7 @@ button:hover {
  to {transform : rotateX(-150deg);}
 }
 
-/* Текст внутри конверта (при открытии) */
+/* Лист с текстом и изображением */
 #letterText {
    display:flex; 
    flex-direction:flex-column; 
@@ -104,8 +100,6 @@ button:hover {
    justify-content:center; 
    background:#fff8dc; 
    padding:20px; 
-   border-radius:px10; 
-   box-shadow:0 4px 15px rgba(0,0,0,0.2);
    max-width:600px; 
    margin-top:-50px; /* чуть поднять над конвертом */
    
@@ -127,12 +121,14 @@ font-size:px16 ;
 line-height:1.5 ;
 color:#333 ;
 text-align:center ;
+max-width:560px; /* чтобы не вылезать за рамки */
+word-wrap:break-word; /* перенос слов при необходимости */
 }
 
-/* Изображение под текстом с приглашением */
+/* Изображение под текстом с приглашением — уменьшено */
 #invitationImage {
- margin-top:-30px; /* чуть поднять изображение к тексту */
- max-width:90%;
+ margin-top:-10px; /* чуть поднять изображение к тексту */
+ max-width:70%; /* уменьшено по ширине */
  height:auto;
  border-radius:8px;
 
@@ -150,7 +146,7 @@ text-align:center ;
 </head>
 <body>
 
-<!-- Меню выбора — выше -->
+<!-- Меню выбора — изначально скрыто -->
 <div id="questionContainer">
  <p>Вы будете присутствовать?</p>
  <div class="buttons">
@@ -167,7 +163,7 @@ text-align:center ;
  </div>
 </div>
 
-<!-- Лист с текстом и изображением -->
+<!-- Лист с текстом и изображением, изначально скрыт -->
 <div class="letter" id="letterText" style="display:none;">
  <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
  <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Приглашение" id="invitationImage"/>
@@ -178,29 +174,28 @@ const envelope = document.getElementById('envelope');
 const letterText = document.getElementById('letterText');
 const questionContainer = document.getElementById('questionContainer');
 
-const letterDuration =1000;
+let menuShown = false;
 
-// Показать меню выбора при загрузке
-window.addEventListener('load', () => {
- setTimeout(() => {
-   questionContainer.classList.add('show');
- },300);
-});
-
-// Открытие конверта при клике
+// Показать меню выбора после открытия конверта
 envelope.addEventListener('click', () => {
 
- // Добавляем класс для анимации открытия
+ // Открываем крышку
  envelope.classList.add('open');
 
- // После анимации открыть лист
+ // После анимации открыть лист и показать меню
  setTimeout(() => {
      // Показать лист
      letterText.style.display='flex';
      setTimeout(() => { // чтобы CSS применился
        letterText.classList.add('show');
      },50);
- },1000); // время анимации открытия крышки
+     
+     // Показать меню выбора только после открытия конверта
+     if (!menuShown) {
+       questionContainer.classList.add('show');
+       menuShown = true;
+     }
+ },1000); // время анимации крышки
 });
 
 // Обработчики кнопок
