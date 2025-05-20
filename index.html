@@ -89,42 +89,54 @@
    text-align:center; 
  }
 
- /* Варианты ответа — перемещены ниже блока с текстом и с отступом */
+ /* Вариант "Вы будете присутствовать?" — контейнер под текстом и чуть ниже листа при открытии */
  .question-container {
    position:absolute; /* чтобы располагать ниже текста и не мешать ему при открытии */
    bottom:-80px; /* чуть ниже листа при открытии (можно регулировать) */
    width:auto;
    display:flex; 
+   flex-direction:flex-column; 
+   align-items:center; 
    justify-content:center; 
-   width:auto; 
-   margin-top:20px; 
+   margin-top:-20px; /* чуть ближе к тексту, чтобы было максимально близко без загораживания */
    z-index:12; /* чтобы быть поверх всего при необходимости */
- }
 
- .buttons {
+   padding-top:10px; /* небольшой отступ сверху для отделения от текста */
+}
+
+/* Варианты ответа — кнопки внутри контейнера с фоном совпадающим с пригласительным текстом */
+.buttons {
    display:flex; 
-   gap:15px; 
- }
+   gap:px15; 
+}
 
- button {
-   padding:10px 20px; 
+/* Общий стиль для кнопок с фоном совпадающим с листом (цвет бумаги) */
+#questionContainer {
+   background-color:#fff8dc; /* совпадает с цветом листа приглашения */
+   padding:10px 20px;
+   border-radius:px10;
+}
+
+/* Стиль для кнопок внутри блока вопросов */
+button {
+   padding:px10 px20; 
    font-size:px16; 
    border:none; 
-   border-radius:px; 
+   border-radius:px5; 
    cursor:pointer; 
    background-color:#4CAF50; 
    color:#fff; 
    transition:.3s ease; 
- }
+}
 
- button:hover {
+button:hover {
    background-color:#45a049; 
- }
+}
 
- /* Вариант "Нет" другого цвета */
- .buttons button:nth-child(2) {
+/* Вариант "Нет" другого цвета */
+#questionContainer button:nth-child(2) {
    background-color:#f44336; 
- }
+}
 </style>
 </head>
 <body>
@@ -139,7 +151,7 @@
  <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
 </div>
 
-<!-- Вопрос и кнопки — перенесены прямо под текст -->
+<!-- Вариант вопроса и кнопки — перемещены ближе к тексту -->
 <div class="question-container" id="questionContainer">
  <p>Вы будете присутствовать?</p>
  <div class="buttons">
