@@ -3,190 +3,155 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Конверт с анимацией и изображением</title>
+<title>Конверт с приглашением</title>
 <!-- Подключение современного шрифта -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
   /* Общие стили */
   body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f0f4f8; /* мягкий фон */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: #000; /* черный фон */
     margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
   }
 
-  /* Фон с изображениями (можно оставить или заменить) */
-  body {
-    background-image: 
-      url('https://gymnasium42.edu-penza.ru/documents/image.png'),
-      url('https://gymnasium42.edu-penza.ru/documents/image.png');
-    background-size: 100px, 80px;
-    background-position: top left, bottom right;
-    background-repeat: repeat;
-    background-color: #f0f4f8;
+  /* Меню выбора — сверху, с анимацией появления */
+  #questionContainer {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    margin-bottom: 20px;
+  }
+  #questionContainer.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  /* Конверт */
-  .envelope {
-    width: 350px;
-    aspect-ratio: 3/2;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: all 1s ease-in-out;
-    cursor: pointer;
+  /* Варианты ответа — кнопки */
+  .buttons {
     display:flex; 
-    flex-direction:column; 
-    align-items:center; 
-    justify-content:center; 
-    background:#fff; 
-    border-radius:15px; 
-    box-shadow:0 10px 20px rgba(0,0,0,0.15);
-  }
-
-  /* Эффект при наведении */
-  .envelope:hover {
-    box-shadow:0 15px 30px rgba(0,0,0,0.2);
-    transform: translateY(-2px);
-  }
-
-  /* Заголовок внутри конверта (можно убрать или оставить) */
-  .envelope h2 {
-    margin-top:10px;
-    font-weight:bold;
-    color:#333;
-  }
-
-  /* Лист с текстом */
-  .letter {
-    position:absolute; 
-    top:50%; 
-    left:50%; 
-    width:80%; 
-    max-width:600px; 
-    padding:20px; 
-    background-color:#fff8dc; 
-    border-radius:px10; 
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
-    transform:translate(-50%, -50%) scale(0);
-    opacity:0;
-    transition:.8s ease-in-out;
-    
-     display:flex; 
-     flex-direction:flex-column; 
-     align-items:center; 
-     justify-content:center; 
-     z-index:11;
+    gap:15px; 
+}
+button {
+   padding:10px 20px;
+   font-size:16px;
+   border:none;
+   border-radius:5px;
+   cursor:pointer;
+   transition:.3s ease;
+}
+button:hover {
+   background-color:#4CAF50;
+}
+#questionContainer p {
+   margin-bottom:10px; 
+   font-weight:bold; 
+   color:#fff; 
 }
 
-/* Показать лист */
-.letter.show {
-   transform:translate(-50%, -50%) scale(1);
-   opacity:1;
+/* Конверт — более реалистичный и анимированный */
+.envelope {
+  width: 350px;
+  height:200px;
+  position: relative;
+  cursor:pointer;
+  perspective:1000px; /* для эффектов открытия */
+}
+.envelope-inner {
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0; left:0;
+  border-radius:10px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);
+  
+}
+.envelope-front, .envelope-flap {
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+}
+.envelope-front {
+  background:#fff8dc; /* цвет конверта */
+  border-radius:10px;
+}
+.envelope-flap {
+  background:#f5deb3; /* цвет крышки */
+  
+}
+/* Анимация открытия конверта */
+.envelope.open .envelope-flap {
+  transform-origin:center top;
+  animation: openFlap 1s forwards ease-in-out;
 }
 
-/* Текст внутри листа */
-.letter p {
-   margin-bottom:15px; 
-   font-size:16px; 
-   line-height:1.5; 
-   color:#333; 
-   text-align:center; 
+@keyframes openFlap {
+ from {transform : rotateX(0deg);}
+ to {transform : rotateX(-150deg);}
 }
 
-/* Контейнер вопроса — чуть ниже текста */
-.question-container {
-   position:absolute; /* чтобы располагать ниже текста и не мешать ему при открытии */
-   bottom:-80px; /* чуть ниже листа при открытии (можно регулировать) */
-   width:auto;
+/* Текст внутри конверта (при открытии) */
+#letterText {
    display:flex; 
    flex-direction:flex-column; 
    align-items:center; 
    justify-content:center; 
-   margin-top:-20px; /* ближе к тексту без загораживания */
+   background:#fff8dc; 
+   padding:20px; 
+   border-radius:px10; 
+   box-shadow:0 4px 15px rgba(0,0,0,0.2);
+   max-width:600px; 
+   margin-top:-50px; /* чуть поднять над конвертом */
    
-   padding-top:10px;
-
-   /* фон совпадает с листом для эстетики */
-   background-color:#fff8dc;
-
-   border-radius:px10;
-
-}
-
-/* Варианты ответов — кнопки внутри контейнера с фоном совпадающим с пригласительным текстом */
-.buttons {
-   display:flex; 
-   gap:px15;  
-}
-
-/* Стиль для кнопок — современные и приятные */
-button {
-   padding:px10 px20;
-   font-size:px16;
-   border:none;
-   border-radius:px5;
    
-   cursor:pointer;
-
-   transition:.3s ease;
-
+   
+   
+   
+   
+   
+   
+   
+   
    
    
 }
-button:hover {
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-background-color:#4CAF50;
-
-}
-#questionContainer button:nth-child(2) {
-background-color:#f44336;
-
-}
-/* Улучшение внешнего вида текста вопроса */
-#questionContainer p {
-margin-bottom:px10 ;
-font-weight:bold ;
-color:#555 ;
+#letterText p {
+margin-bottom:px15 ;
+font-size:px16 ;
+line-height:1.5 ;
+color:#333 ;
+text-align:center ;
 }
 
-/* Анимация появления вопроса — чуть позже после листа */
-#questionContainer.show {
-opacity:.95 ;
-transition:.8s ease-in-out ;
+/* Изображение под текстом с приглашением */
+#invitationImage {
+ margin-top:-30px; /* чуть поднять изображение к тексту */
+ max-width:90%;
+ height:auto;
+ border-radius:8px;
+
 }
+
+/* Анимация появления текста и изображения */
+#letterText.show {
+ opacity:.95 ;
+ transition:.8s ease-in-out ;
+}
+
+/* Общие стили для заголовка или текста внутри листа (если нужен) */
+
 </style>
 </head>
 <body>
 
-<!-- Конверт -->
-<div class="envelope" id="envelope">
- <h2>Закрытый конверт</h2>
-</div>
-
-<!-- Лист с текстом -->
-<div class="letter" id="letterText">
- <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
-</div>
-
-<!-- Вариант вопроса и кнопки — расположены ближе к тексту -->
-<div class="question-container" id="questionContainer">
+<!-- Меню выбора — выше -->
+<div id="questionContainer">
  <p>Вы будете присутствовать?</p>
  <div class="buttons">
  <button id="yesBtn">Да</button>
@@ -194,29 +159,51 @@ transition:.8s ease-in-out ;
  </div>
 </div>
 
+<!-- Конверт -->
+<div class="envelope" id="envelope">
+ <div class="envelope-inner">
+   <div class="envelope-front"></div>
+   <div class="envelope-flap"></div>
+ </div>
+</div>
+
+<!-- Лист с текстом и изображением -->
+<div class="letter" id="letterText" style="display:none;">
+ <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
+ <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Приглашение" id="invitationImage"/>
+</div>
+
 <script>
 const envelope = document.getElementById('envelope');
 const letterText = document.getElementById('letterText');
 const questionContainer = document.getElementById('questionContainer');
 
-const letterDuration = 1000;
+const letterDuration =1000;
 
-envelope.addEventListener('click', () => {
-  
-  envelope.classList.add('open');
-
-  
-  setTimeout(() => {
-    
-     letterText.classList.add('show');
-     
-     setTimeout(() => {
-       questionContainer.classList.add('show');
-     }, letterDuration *2);
-     
- }, letterDuration);
+// Показать меню выбора при загрузке
+window.addEventListener('load', () => {
+ setTimeout(() => {
+   questionContainer.classList.add('show');
+ },300);
 });
-  
+
+// Открытие конверта при клике
+envelope.addEventListener('click', () => {
+
+ // Добавляем класс для анимации открытия
+ envelope.classList.add('open');
+
+ // После анимации открыть лист
+ setTimeout(() => {
+     // Показать лист
+     letterText.style.display='flex';
+     setTimeout(() => { // чтобы CSS применился
+       letterText.classList.add('show');
+     },50);
+ },1000); // время анимации открытия крышки
+});
+
+// Обработчики кнопок
 document.getElementById('yesBtn').addEventListener('click', () => {
  alert("Спасибо! Мы рады вашему присутствию.");
 });
