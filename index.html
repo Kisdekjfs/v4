@@ -64,8 +64,18 @@
  border-radius:15px;
  box-shadow:0 8px 20px rgba(0,0,0,0.2);
  overflow:hidden;
- /* Добавим начальную позицию для анимации */
+ /* Начальная позиция для анимации — закрытый конверт */
  transform-origin: bottom center;
+}
+
+/* Добавим класс для открытого состояния */
+.envelope.open {
+ transform-origin: bottom center !important; /* точка вращения снизу */
+ transform-box: fill-box !important; /* для совместимости */
+ animation-name: openEnvelopeAnimation;
+ animation-duration: .8s;
+ animation-fill-mode: forwards;
+/* Можно добавить плавное вращение */
 }
 
 .flap {
@@ -146,15 +156,6 @@ button:hover {
 }
 
 /* Анимация открытия конверта */
-.envelope.open {
- transform-origin: bottom center !important; /* точка вращения снизу */
- transform-box: fill-box !important; /* для совместимости */
- animation-name: openEnvelopeAnimation;
- animation-duration: .8s;
- animation-fill-mode: forwards;
-/* Можно добавить плавное вращение */
-}
-
 @keyframes openEnvelopeAnimation {
  from {transform : rotateX(0deg);}
  to {transform : rotateX(-150deg);}
@@ -229,16 +230,29 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const thankYouMsg = document.getElementById('thankYouMessage');
 
-// Обработчик клика
-wrapper.addEventListener('click', () => {
+// Функция открыть письмо (анимация)
+function openEnvelope() {
  if (!isOpen) {
-   // Открываем письмо
    envelope.classList.add('open'); // добавляем класс для анимации
    isOpen=true;
 
+   // После завершения анимации можно показать содержимое или оставить как есть
+ }
+}
+
+// Обработчик клика
+wrapper.addEventListener('click', () => {
+ if (!isOpen) {
+   openEnvelope();
  } else if (isOpen && !hasAskedPresence) {
    showPresenceQuestion();
  }
+});
+
+// Автоматически открыть конверт при загрузке страницы
+window.addEventListener('load', () => {
+ // Запускаем анимацию открытия сразу после загрузки
+ openEnvelope();
 });
 
 // Функция показать вопрос
