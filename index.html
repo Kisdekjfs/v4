@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Конверт с анимацией и изображениями</title>
+<title>Конверт с анимацией и изображением</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -15,16 +15,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
   }
 
   /* Стиль для конверта */
   .envelope {
-    width: 350px;
+    width: 500px; /* увеличен размер */
+    max-width: 90%; /* чтобы было адаптивно на мобильных */
     height: auto;
-    max-height: 350px;
-    aspect-ratio: 3/2;
+    aspect-ratio: 3/2; /* сохраняем пропорции */
     position: relative;
     transform-style: preserve-3d;
     transition: all 1s ease-in-out;
@@ -36,6 +36,17 @@
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    padding:20px;
+  }
+
+  /* Адаптивность для мобильных устройств */
+  @media (max-width: 600px) {
+    .envelope {
+      width: 90%;
+      height:auto;
+      aspect-ratio:auto; /* отключаем фиксированное соотношение для мобильных */
+      padding:15px;
+    }
   }
 
   /* Визуальный эффект открытия (можно расширить) */
@@ -47,10 +58,10 @@
   .letter {
     position: absolute; /* чтобы было поверх конверта */
     top: 50%;
-    left: 50%;
-    width: 80%;
-    max-width: 600px;
-    padding: 20px;
+    left:50%;
+    width:80%;
+    max-width:600px;
+    padding:20px;
     background-color:#fff8dc; /* светлый цвет бумаги */
     border-radius:10px; 
     box-shadow:0 4px 10px rgba(0,0,0,0.2);
@@ -78,7 +89,7 @@
    text-align:center; 
  }
 
- /* Изображения внутри текста — уменьшены и с отступами */
+ /* Уменьшенное изображение внутри текста */
  .letter img {
    max-width:80px; /* уменьшено в несколько раз (было максимум по ширине) */
    height:auto; 
@@ -123,14 +134,12 @@
  <h2>Закрытый конверт</h2>
 </div>
 
-<!-- Лист с текстом и изображениями -->
+<!-- Лист с текстом и изображением -->
 <div class="letter" id="letterText">
  <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок.</p>
- <!-- Первое изображение -->
+ <!-- Уменьшенное изображение -->
  <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Фон" />
  <p>Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
- <!-- Второе изображение -->
- <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Фон" />
 </div>
 
 <!-- Вопрос и кнопки -->
