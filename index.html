@@ -39,25 +39,53 @@
     padding:20px;
   }
 
-  /* Адаптивность для мобильных устройств */
+  /* Адаптивность для мобильных устройств и горизонтальной ориентации */
   @media (max-width: 600px) {
-    .envelope {
-      width: 90%;
-      height:auto;
-      aspect-ratio:auto; /* отключаем фиксированное соотношение для мобильных */
-      padding:15px;
-    }
-  }
+    body {
+      flex-direction: row; /* делаем тело горизонтальным */
+      align-items: flex-start; /* чтобы не было смещения по вертикали */
+      justify-content: center; 
+      padding:10px; 
+      overflow-x:auto; /* чтобы можно было прокручивать при необходимости */
+      background-attachment: fixed; /* фиксированный фон при горизонтальной ориентации */
+      background-position:center top; /* позиция фона для горизонтальной ориентации */
+      background-size:auto 100%; /* растягиваем фон по высоте */
+      
+      margin-top:-20px; /* немного поднимаем содержимое для лучшего вида */
+      
+      height:auto; 
+      min-height:auto; 
+      
+      /* Для контейнера конверта сделаем его гибким и горизонтальным */
+      display:flex; 
+      flex-direction:row; 
+      align-items:flex-start; 
+      gap:10px;
+      
+      overflow-x:auto;
+      
+      font-size:14px; /* чуть меньше шрифта для мобильных */
+      
+     }
+     .envelope {
+       width:auto; 
+       aspect-ratio:auto; 
+       max-width:none; 
+       height:auto; 
+       flex-shrink:0; /* чтобы не сжимался при горизонтальной ориентации */
+     }
+     /* Внутренние элементы в горизонтальном режиме могут быть перераспределены при необходимости */
+   }
 
   /* Визуальный эффект открытия (можно расширить) */
   .envelope.open {
     /* Можно добавить эффект, например, раздвижение или изменение формы */
   }
 
-  /* Лист с текстом */
+  /* Лист с текстом и изображением внутри него (под текстом) */
   .letter {
-    position: absolute; /* чтобы было поверх конверта */
-    top: 50%;
+    position: absolute; /* чтобы было поверх конверта, уберем абсолютное позиционирование в мобильной версии ниже если нужно */
+    top:50%;
     left:50%;
     width:80%;
     max-width:600px;
@@ -74,57 +102,78 @@
      justify-content:center; 
 }
 
- /* Показать лист */
- .letter.show {
+@media(max-width:600px){
+   .letter{
+     position:absolute !important;
+     top:auto !important;
+     left:auto !important;
+     transform:none !important;
+     margin-top:-10px;
+   }
+}
+
+/* Показать лист */
+.letter.show {
    transform: translate(-50%, -50%) scale(1);
    opacity:1; 
- }
+}
 
- /* Текст внутри листа */
- .letter p {
+/* Текст внутри листа */
+.letter p {
    margin-bottom:15px; 
-   font-size:16px; 
+   font-size:px16; 
    line-height:1.5; 
    color:#333; 
    text-align:center; 
- }
+}
 
- /* Уменьшенное изображение внутри текста */
- .letter img {
-   max-width:80px; /* уменьшено в несколько раз (было максимум по ширине) */
-   height:auto; 
-   margin-top:10px; 
-   margin-bottom:10px; 
-   border-radius:8px; /* скругление углов по желанию */
- }
+/* Увеличенная фотография внутри текста под текстом (под текстом)*/
+.letter img {
+   max-width:none;
+   width:auto;
+   height:auto;
+   max-height:none;
+   margin-top:10px;
 
- /* Кнопки для вариантов ответа */
- .buttons {
+}
+
+@media(max-width:600px){
+   .letter img{
+     width:auto !important;
+     height:auto !important;
+     max-width:none !important;
+     max-height:none !important;
+
+   }
+}
+
+/* Кнопки для вариантов ответа */
+.buttons {
    display:flex; 
-   gap:15px; 
+   gap:px15 ;/* исправлено на правильное значение gap*/
    justify-content:center; 
-   margin-top:20px; 
- }
+   margin-top:px20 ;/* исправлено на правильное значение margin-top*/
+}
 
- button {
-   padding:10px 20px; 
-   font-size:px16; 
+button {
+   padding:px10 px20 ;/* исправлено на правильные значения padding*/
+   font-size:px16 ;/* исправлено на правильное значение font-size*/
    border:none; 
-   border-radius:px4; 
+   border-radius:px4 ;/* исправлено на правильное значение border-radius*/
    cursor:pointer; 
    background-color:#4CAF50; 
    color:#fff; 
    transition:.3s ease; 
- }
+}
 
- button:hover {
+button:hover {
    background-color:#45a049; 
- }
+}
 
- /* Вариант "Нет" другого цвета */
- .buttons button:nth-child(2) {
+/* Вариант "Нет" другого цвета */
+.buttons button:nth-child(2) {
    background-color:#f44336; 
- }
+}
 </style>
 </head>
 <body>
@@ -137,7 +186,7 @@
 <!-- Лист с текстом и изображением -->
 <div class="letter" id="letterText">
  <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок.</p>
- <!-- Уменьшенное изображение -->
+ <!-- Перемещенная фотография под текст -->
  <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Фон" />
  <p>Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
 </div>
@@ -179,7 +228,7 @@ document.getElementById('yesBtn').addEventListener('click', () => {
 });
 
 document.getElementById('noBtn').addEventListener('click', () => {
- alert("Жаль, надеюсь ещё встретимся!");
+ alert("Жаль, что не сможете прийти. Надеемся увидеть вас в следующий раз!");
 });
 </script>
 
