@@ -3,115 +3,64 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Конверт с анимацией и изображением</title>
+<title>Конверт с фоном и меню</title>
 <style>
   body {
     font-family: Arial, sans-serif;
-    /* Множественные фоны для создания эффекта заднего плана */
+    /* Фоновые изображения в шахматном порядке */
     background-image: 
+      url('https://gymnasium42.edu-penza.ru/documents/image.png'),
       url('https://gymnasium42.edu-penza.ru/documents/image.png'),
       url('https://gymnasium42.edu-penza.ru/documents/image.png'),
       url('https://gymnasium42.edu-penza.ru/documents/image.png');
     background-size: 
-      100px, /* размер для первой картинки */
-      80px,  /* размер для второй */
-      60px;  /* размер для третьей */
+      100px 100px, /* первый */
+      100px 100px, /* второй */
+      100px 100px, /* третий */
+      100px 100px; /* четвертый */
     background-position: 
       top left,
-      center,
-      bottom right;
+      bottom right,
+      top right,
+      bottom left;
     background-repeat: repeat;
     background-color: #f0f0f0; /* фон на случай, если изображения не заполняют полностью */
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start;
+    min-height: 100vh;
     margin: 0;
   }
 
-  /* Стиль для конверта */
-  .envelope {
+  /* Обертка для содержимого */
+  .container {
     width: 350px;
-    height: auto;
-    max-height: 350px;
-    aspect-ratio: 3/2;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: all 1s ease-in-out;
-    cursor: pointer;
+    margin-top: 50px; /* отступ сверху */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    z-index: 10; /* чтобы было поверх фона */
   }
 
-  /* Визуальный эффект открытия (можно расширить) */
-  .envelope.open {
-    /* Можно добавить эффект, например, раздвижение или изменение формы */
-  }
-
-  /* Лист с текстом */
-  .letter {
-    position: absolute; /* чтобы было поверх конверта */
-    top: 50%;
-    left: 50%;
-    width: 80%;
-    max-width: 600px;
+  /* Плашка с текстом */
+  .text-box {
     padding: 20px;
     background-color: #fff8dc; /* светлый цвет бумаги */
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    transition: all 1s ease-in-out;
+    text-align: center;
+    font-size:16px;
+    line-height:1.5;
+    margin-bottom:20px; /* отступ снизу для меню */
+  }
 
-     /* Центрирование текста внутри листа */
-     display:flex; 
-     flex-direction:flex-column; 
-     align-items:center; 
-     justify-content:center; 
-     z-index:11; /* поверх конверта и фона */
+  /* Меню с выбором — расположено прямо под плашкой */
+  .question {
+    display:flex; 
+    gap:15px; 
+    justify-content:center; 
 }
 
- /* Показать лист */
- .letter.show {
-   transform: translate(-50%, -50%) scale(1);
-   opacity:1;
- }
-
- /* Стиль для текста внутри листа */
- .letter p {
-   margin-bottom:15px; 
-   font-size:16px; 
-   line-height:1.5; 
-   color:#333; 
-   text-align:center; 
- }
-
- /* Удалена фотография */
-
- /* Варианты ответа — перемещены ниже блока с текстом и с отступом */
- .question-container {
-   position:absolute; /* чтобы располагать ниже текста и не мешать ему при открытии */
-   bottom:-80px; /* чуть ниже листа при открытии (можно регулировать) */
-   width:auto;
-   display:flex; 
-   justify-content:center; 
-   width:auto; 
-   margin-top:20px; 
-   z-index:12; /* чтобы быть поверх всего при необходимости */
- }
-
- .buttons {
-   display:flex; 
-   gap:15px; 
- }
-
- button {
+button {
    padding:10px 20px; 
    font-size:16px; 
    border:none; 
@@ -120,62 +69,41 @@
    background-color:#4CAF50; 
    color:#fff; 
    transition:.3s ease; 
- }
+}
 
- button:hover {
+button:hover {
    background-color:#45a049; 
- }
+}
 
- /* Вариант "Нет" другого цвета */
- .buttons button:nth-child(2) {
+/* Вариант "Нет" другого цвета */
+button:nth-child(2) {
    background-color:#f44336; 
- }
+}
 </style>
 </head>
 <body>
 
-<!-- Конверт -->
-<div class="envelope" id="envelope">
- <h2>Закрытый конверт</h2>
-</div>
+<div class="container">
+  
+  <!-- Плашка с текстом -->
+  <div class="text-box" id="textBox">
+     <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
+  </div>
 
-<!-- Лист с текстом -->
-<div class="letter" id="letterText">
- <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
-</div>
-
-<!-- Вопрос и кнопки — перемещены ниже -->
-<div class="question-container" id="questionContainer">
- <p>Вы будете присутствовать?</p>
- <div class="buttons">
-   <button id="yesBtn">Да</button>
-   <button id="noBtn">Нет</button>
+  <!-- Меню с выбором -->
+  <div class="question" id="questionContainer">
+     <p>Вы будете присутствовать?</p>
+     <div class="buttons">
+       <button id="yesBtn">Да</button>
+       <button id="noBtn">Нет</button>
+     </div>
  </div>
+
 </div>
 
 <script>
-const envelope = document.getElementById('envelope');
-const letterText = document.getElementById('letterText');
 const questionContainer = document.getElementById('questionContainer');
 
-const letterDuration = 1000;
-
-envelope.addEventListener('click', () => {
-  
-  envelope.classList.add('open');
-
-  
-  setTimeout(() => {
-    
-     letterText.classList.add('show');
-     
-     setTimeout(() => {
-       questionContainer.classList.add('show');
-     }, letterDuration *2);
-     
- }, letterDuration);
-});
-  
 document.getElementById('yesBtn').addEventListener('click', () => {
  alert("Спасибо! Мы рады вашему присутствию.");
 });
