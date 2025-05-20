@@ -3,9 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Конверт без эффекта переворачивания</title>
+<title>Конверт с анимацией</title>
 <style>
-  /* Общие стили для конверта */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  /* Стиль для конверта */
   .envelope {
     width: 350px;
     height: auto;
@@ -13,7 +22,7 @@
     aspect-ratio: 3/2;
     position: relative;
     transform-style: preserve-3d;
-    transition: all 0.8s ease-in-out;
+    transition: all 1s ease-in-out;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -22,34 +31,132 @@
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    overflow: hidden;
   }
 
-  /* Стиль для открытого конверта */
+  /* Визуальный эффект открытия (можно расширить) */
   .envelope.open {
-    /* Можно добавить стили для состояния "открыто" */
-    /* Например, изменить высоту или прозрачность */
+    /* Можно добавить эффект, например, раздвижение или изменение формы */
   }
 
-  /* Дополнительные стили по необходимости */
+  /* Лист с текстом */
+  .letter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff8dc; /* светлый цвет бумаги */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: all 1s ease-in-out;
+    z-index: 10; /* поверх конверта */
+  }
+
+  /* Показать лист */
+  .letter.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity:1;
+  }
+
+  /* Стиль для текста внутри листа */
+  .letter p {
+    margin-bottom:15px; 
+      font-size:16px; 
+      line-height:1.5; 
+      color:#333; 
+}
+
+ /* Кнопки для вариантов ответа */
+ .buttons {
+   display:flex; 
+   gap:15px; 
+   justify-content:center; 
+   margin-top:20px; 
+ }
+
+ button {
+   padding:10px 20px; 
+   font-size:16px; 
+   border:none; 
+   border-radius:px; 
+   cursor:pointer; 
+   background-color:#4CAF50; 
+   color:#fff; 
+   transition:.3s ease; 
+ }
+
+ button:hover {
+   background-color:#45a049; 
+ }
+
+ /* Вариант "Нет" другого цвета */
+ .buttons button:nth-child(2) {
+   background-color:#f44336; 
+ }
 </style>
 </head>
 <body>
 
-<div class="envelope" id="myEnvelope">
-  <!-- Внутреннее содержимое конверта -->
-  <h2>Закрытый конверт</h2>
+<!-- Конверт -->
+<div class="envelope" id="envelope">
+ <h2>Закрытый конверт</h2>
+</div>
+
+<!-- Лист с текстом -->
+<div class="letter" id="letterText">
+ <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
+</div>
+
+<!-- Лист с вопросом и ответами -->
+<div class="letter" id="questionSheet">
+ <p>Вы будете присутствовать?</p>
+ <div class="buttons">
+   <button id="yesBtn">Да</button>
+   <button id="noBtn">Нет</button>
+ </div>
 </div>
 
 <script>
-  const envelope = document.getElementById('myEnvelope');
+const envelope = document.getElementById('envelope');
+const letterText = document.getElementById('letterText');
+const questionSheet = document.getElementById('questionSheet');
 
-  // Обработчик клика для открытия/закрытия
-  envelope.addEventListener('click', () => {
-    envelope.classList.toggle('open');
+const letterDuration = 1000; // время анимации открытия в мс
+
+// Обработчик клика по конверту
+envelope.addEventListener('click', () => {
+  
+  // Добавляем класс для эффекта открытия
+  envelope.classList.add('open');
+
+  
+  // После короткой задержки показываем первый лист
+  setTimeout(() => {
     
-    // Можно добавить дополнительные действия при открытии/закрытии
-  });
+     // Плавное появление текста
+     letterText.classList.add('show');
+     
+     // После появления текста показываем вопрос
+     setTimeout(() => {
+       questionSheet.classList.add('show');
+     }, letterDuration); // задержка перед появлением вопроса
+     
+     
+     
+ }, letterDuration); // задержка после открытия конверта
+});
+  
+// Обработчики кнопок
+document.getElementById('yesBtn').addEventListener('click', () => {
+ alert("Спасибо! Мы рады вашему присутствию.");
+});
+
+document.getElementById('noBtn').addEventListener('click', () => {
+ alert("Жаль, что не сможете прийти. Надеемся увидеть вас в следующий раз!");
+});
 </script>
 
 </body>
