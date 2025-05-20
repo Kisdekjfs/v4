@@ -39,32 +39,16 @@
     padding:20px;
   }
 
-  /* Адаптивность для мобильных устройств и горизонтальной ориентации */
+  /* Адаптивность для мобильных устройств (без горизонтальной ориентации) */
   @media (max-width: 600px) {
     body {
-      flex-direction: row; /* делаем тело горизонтальным */
-      align-items: flex-start; /* чтобы не было смещения по вертикали */
-      justify-content: center; 
+      flex-direction: column; /* оставить вертикальную ориентацию */
+      align-items:center; 
+      justify-content:center; 
       padding:10px; 
-      overflow-x:auto; /* чтобы можно было прокручивать при необходимости */
-      background-attachment: fixed; /* фиксированный фон при горизонтальной ориентации */
-      background-position:center top; /* позиция фона для горизонтальной ориентации */
-      background-size:auto 100%; /* растягиваем фон по высоте */
+      overflow-x:hidden; /* отключить горизонтальную прокрутку */
       
       margin-top:-20px; /* немного поднимаем содержимое для лучшего вида */
-      
-      height:auto; 
-      min-height:auto; 
-      
-      /* Для контейнера конверта сделаем его гибким и горизонтальным */
-      display:flex; 
-      flex-direction:row; 
-      align-items:flex-start; 
-      gap:10px;
-      
-      overflow-x:auto;
-      
-      font-size:14px; /* чуть меньше шрифта для мобильных */
       
      }
      .envelope {
@@ -72,9 +56,8 @@
        aspect-ratio:auto; 
        max-width:none; 
        height:auto; 
-       flex-shrink:0; /* чтобы не сжимался при горизонтальной ориентации */
+       flex-shrink:0; /* чтобы не сжимался при мобильных */
      }
-     /* Внутренние элементы в горизонтальном режиме могут быть перераспределены при необходимости */
    }
 
   /* Визуальный эффект открытия (можно расширить) */
