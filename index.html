@@ -20,22 +20,24 @@
     min-height: 100vh;
   }
 
-  /* Меню выбора — сверху, с анимацией появления */
+  /* Меню выбора — чуть ниже, с анимацией появления */
   #questionContainer {
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
+    margin-top: 30px; /* чуть больше отступа снизу */
     margin-bottom: 20px;
-  }
-  #questionContainer.show {
+    text-align: center;
+}
+#questionContainer.show {
     opacity: 1;
     transform: translateY(0);
-  }
+}
 
-  /* Варианты ответа — кнопки */
-  .buttons {
-    display:flex; 
-    gap:15px; 
+/* Варианты ответа — кнопки */
+.buttons {
+  display:flex; 
+  gap:15px; 
 }
 button {
    padding:10px 20px;
@@ -117,7 +119,7 @@ button:hover {
 }
 #letterText p {
 margin-bottom:px15 ;
-font-size:px16 ;
+font-size:px15 ; /* уменьшено на один пункт (с16 до15) */
 line-height:1.5 ;
 color:#333 ;
 text-align:center ;
@@ -128,7 +130,7 @@ word-wrap:break-word; /* перенос слов при необходимост
 /* Изображение под текстом с приглашением — уменьшено */
 #invitationImage {
  margin-top:-10px; /* чуть поднять изображение к тексту */
- max-width:70%; /* уменьшено по ширине */
+ max-width:70%; /* уменьшено по ширине, можно оставить или сделать меньше по желанию */
  height:auto;
  border-radius:8px;
 
@@ -139,8 +141,6 @@ word-wrap:break-word; /* перенос слов при необходимост
  opacity:.95 ;
  transition:.8s ease-in-out ;
 }
-
-/* Общие стили для заголовка или текста внутри листа (если нужен) */
 
 </style>
 </head>
@@ -182,7 +182,7 @@ envelope.addEventListener('click', () => {
  // Открываем крышку
  envelope.classList.add('open');
 
- // После анимации открыть лист и показать меню
+ // После анимации открыть лист и показать меню чуть ниже
  setTimeout(() => {
      // Показать лист
      letterText.style.display='flex';
@@ -190,7 +190,7 @@ envelope.addEventListener('click', () => {
        letterText.classList.add('show');
      },50);
      
-     // Показать меню выбора только после открытия конверта
+     // Показать меню выбора чуть ниже
      if (!menuShown) {
        questionContainer.classList.add('show');
        menuShown = true;
