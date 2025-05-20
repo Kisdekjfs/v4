@@ -25,7 +25,7 @@
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
-    margin-top: 150px; /* увеличено для более низкого расположения */
+    margin-top: 50px; /* увеличено для более низкого расположения */
     margin-bottom: 20px;
     text-align: center;
 }
@@ -119,18 +119,23 @@ button:hover {
 }
 #letterText p {
 margin-bottom:px15 ;
-font-size:px8 ; /* уменьшено на два пункта (с15 до13) */
+font-size:px13 ; /* уменьшено на два пункта (с15 до13) */
 line-height:1.5 ;
 color:#333 ;
 text-align:center ;
-max-width:560px; /* чтобы не вылезать за рамки */
+max-width:100%; /* чтобы не вылазить за рамки контейнера */
 word-wrap:break-word; /* перенос слов при необходимости */
+ box-sizing:border-box;
+/* добавим паддинги для внутреннего отступа текста на мобильных */  
+ padding-left:10px;  
+ padding-right:10px;
+
 }
 
-/* Изображение под текстом с приглашением — уменьшено */
+/* Изображение под текстом с приглашением — уменьшено и адаптивное */
 #invitationImage {
  margin-top:-10px; /* чуть поднять изображение к тексту */
- max-width:70%; /* уменьшено по ширине, можно оставить или сделать меньше по желанию */
+ max-width:70%; /* уменьшено по ширине, чтобы не вылазить за границы контейнера */
  height:auto;
  border-radius:8px;
 
@@ -142,6 +147,23 @@ word-wrap:break-word; /* перенос слов при необходимост
  transition:.8s ease-in-out ;
 }
 
+/* Медиазапросы для мобильных устройств */
+@media (max-width:600px) {
+  
+ #questionContainer {
+   margin-top:30px; /* чуть ниже на мобильных, если нужно */
+ }
+ #letterText {
+   padding-left:10px !important; 
+   padding-right:10px !important; 
+ }
+ #invitationImage {
+   max-width:80%; /* чуть больше ширина для мобильных, если нужно */
+ }
+ button {
+   font-size:px14 ; /* немного меньше шрифта кнопок для мобильных */  
+ }
+}
 </style>
 </head>
 <body>
