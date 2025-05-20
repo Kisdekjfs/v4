@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Приглашение с конвертом</title>
+<!-- https://dzen.ru/video/watch/67ecb264d78597264c39e1ab?utm_referrer=dzen.ru -->
+<!-- https://zvukipro.com/index.php?do=download&id=22191 -->
+<style>
+  body {
+    background: linear-gradient(135deg, #87CEFA, #ADD8E6); /* Голубой градиент */
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column; /* чтобы разместить элементы вертикально */
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  /* Добавляем стиль для фона музыки, чтобы она не мешала */
+  #backgroundMusic {
+    display: none; /* скрываем элемент */
+  }
+
+  .main-content {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin-top: 50px; /* чтобы основной блок был чуть ниже */
+  }
+
+  h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+
+  /* Обертка для конверта */
+  .envelope-wrapper {
+    width: 100%;
+    aspect-ratio: 3/2; /* соотношение сторон для мобильных устройств */
+    perspective: 1000px; /* добавляем глубину для анимации */
+    cursor: pointer; /* чтобы было понятно, что можно взаимодействовать */
+    position: relative;
+  }
+
+  /* Сам конверт */
+  .envelope {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s ease;
+    cursor:pointer; /* курсор при наведении */
+  }
+
+  /* Верхняя часть конверта (крышка) */
+  .flap {
+    position: absolute;
+    top: -10%; /* подняли чуть выше для эффекта открытия */
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background-color: #d2691e; /* коричневый цвет */
+    border-bottom: 2px solid #8b4513; /* граница */
+    transform-origin: top; /* точка вращения — верхняя часть */
+    transition: transform 1s ease;
+
+   font-weight:bold; 
+   color:#fff; 
+   font-family:'Arial',sans-serif; 
+   font-size:1em; 
+   user-select:none; 
+   
+   cursor:pointer; 
+   
+   padding:10px;
+   box-sizing:border-box;
+   text-align:center;
+
+ }
+  
+/* Контент внутри конверта (само письмо) */
+.envelope-content {
+ position:absolute; 
+ top:-10%; 
+ left:-10%; 
+ width:120%; 
+ background:#fff; 
+ border-radius:8px; 
+ box-shadow:0 4px 8px rgba(0,0,0,0.2); 
+ padding:20px; 
+ box-sizing:border-box; 
+ z-index:-1; /* по умолчанию под крышкой */ 
+ opacity:0; /* скрыто по умолчанию */
+ transition:.5s ease-in-out all;
+
+ display:flex; 
+ flex-direction:column; 
+
+ align-items:center;
+
+ font-family:'Arial',sans-serif;
+
+}
+
+/* Открытие крышки при активном состоянии (через класс) */
+.envelope.open .flap {
+ transform-origin: top;
+ transform: rotateX(-150deg);
+}
+
+/* Показ содержимого при открытии */
+.envelope.open .envelope-content {
+ opacity:1;
+ z-index:auto;
+}
+
+/* Стиль текста внутри письма */
+.message {
+ margin-top:-10px; 
+ font-size:1.2em; 
+ color:#333; 
+
+}
+
+/* Адаптивные стили для кнопок и текста вопросов */
+#question {
+ margin-top:px-15px ;
+ font-weight:bold;
+ font-size:1.2em;
+ color:#333;
+}
+
+.answer-buttons {
+ margin-top:px-15px ;
+ display:flex ;
+ justify-content:center ;
+ gap :15px ;
+ flex-wrap:true ;
+}
+
+button {
+ padding:.75em 1.5em ;
+ font-size:.9em ;
+ border-radius:.5em ;
+ border:none ;
+ cursor:pointer ;
+ background-color:#2e8b57 ;
+ color:#fff ;
+ transition:.3s background-color ease-in-out, transform .2s ease-in-out , opacity .5s ease-in-out ;
+}
+
+button:hover {
+ background-color:#246b45 ;
+ transform : scale(1.05);
+}
+
+/* Эффект исчезновения для сообщений и вопросов при выборе */
+
+.fade-out {
+ opacity:0 !important;
+ transition:.5s opacity ease-in-out;
+}
+
+/* Удалены стили для меню снизу */
+
+</style>
+</head>
+<body>
+
+<!-- Вставляем музыку на фон -->
+<audio autoplay loop muted id="backgroundMusic">
+ <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+ Ваш браузер не поддерживает элемент audio.
+</audio>
+
+<div class="main-content">
+<h1>Приглашение</h1>
+
+<div class="envelope-wrapper" id="envelopeWrapper">
+ <div class="envelope" id="envelope">
+   <div class="flap" id="flap">Нажми, чтобы открыть письмо</div>
+   <div class="envelope-content" id="content">
+     <div class="message" id="messageContent">
+       <h2>Гимназия №42 г. Пенза</h2>
+       <p>Дорогой учитель!<br><br>
+       Ты приглашён на особое мероприятие в нашей гимназии!<br><br>
+       Ждём тебя с нетерпением!</p>
+       <!-- Вставляем изображение гимназии -->
+       <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Гимназия №42 г. Пенза" style="max-width:100%; height:auto; border-radius:8px;margin-top:px;">
+     </div>
+     <!-- Вопросы скрыты по умолчанию -->
+     <div id="questionContainer" style="display:none;">
+       <div id="question">Вы будете присутствовать?</div>
+       <div class="answer-buttons">
+         <button id="yesBtn">Да</button>
+         <button id="noBtn">Нет</button>
+       </div>
+     </div>
+     <!-- Благодарственное сообщение после выбора -->
+     <div id="thankYouMessage" style="display:none;font-size:1.3em;margin-top:px;text-align:center;"></div>
+   </div>
+ </div>
+</div>
+
+<!-- Нижнее меню убрано -->
+
+</div>
+
+<script>
+// Переменные состояния
+let isOpen = false; // открыто ли письмо
+let hasAskedPresence = false;
+
+// Получаем элементы
+const envelope = document.getElementById('envelope');
+const wrapper = document.getElementById('envelopeWrapper');
+const flap = document.getElementById('flap');
+const messageContent = document.getElementById('messageContent');
+const questionContainer = document.getElementById('questionContainer');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const thankYouMsg = document.getElementById('thankYouMessage');
+
+// Обработчик открытия письма
+wrapper.addEventListener('click', () => {
+ if (!isOpen) {
+   // Открываем письмо
+   envelope.classList.toggle('open');
+   isOpen = true;
+
+ } else if (isOpen && !hasAskedPresence) {
+   // После открытия показываем вопрос
+   showPresenceQuestion();
+ }
+});
+
+// Функция показать вопрос
+function showPresenceQuestion() {
+ // скрываем содержимое письма плавно
+ messageContent.classList.add('fade-out');
+
+ // через полсекунды показываем вопрос
+ setTimeout(() => {
+   messageContent.style.display='none';
+   questionContainer.style.display='block';
+ },500);
+
+ hasAskedPresence=true;
+
+ // Обработчики кнопок
+ document.getElementById('yesBtn').onclick = () => {
+   handleAnswer("Спасибо! Ждем вас на мероприятии.");
+ };
+ document.getElementById('noBtn').onclick = () => {
+   handleAnswer("Жаль, ну, тогда надеюсь мы ещё встретимся.");
+ };
+}
+
+// Общая функция обработки ответа
+function handleAnswer(text) {
+ const thankMsgDiv = document.createElement('div');
+ thankMsgDiv.innerText=text;
+ thankMsgDiv.style.fontSize='1.3em';
+ thankMsgDiv.style.marginTop='20px';
+ thankMsgDiv.style.opacity='0';
+ thankMsgDiv.style.transition='opacity .5s ease-in-out';
+
+ // вставляем сообщение в блок благодарности
+ const container = document.getElementById('thankYouMessage');
+ container.innerHTML=''; // очищаем предыдущие сообщения
+ container.appendChild(thankMsgDiv);
+ container.style.display='block';
+
+ // плавное появление сообщения
+ setTimeout(() => { thankMsgDiv.style.opacity='1'; },50);
+
+ // Можно добавить эффект исчезновения или перехода дальше по желанию
+}
+</script>
+
+</body>
+</html>
