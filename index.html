@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Конверт с анимацией и изображением</title>
+<title>Конверт с анимацией и изображениями</title>
 <style>
   body {
     font-family: Arial, sans-serif;
-    /* Добавляем фоновое изображение */
+    /* Фоновое изображение (можете убрать или оставить) */
     background-image: url('https://gymnasium42.edu-penza.ru/documents/image.png');
     background-size: cover;
     background-position: center;
@@ -29,10 +29,10 @@
     transform-style: preserve-3d;
     transition: all 1s ease-in-out;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display:flex; 
+    flex-direction:column; 
+    align-items:center; 
+    justify-content:center; 
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
@@ -51,14 +51,12 @@
     width: 80%;
     max-width: 600px;
     padding: 20px;
-    background-color: #fff8dc; /* светлый цвет бумаги */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background-color:#fff8dc; /* светлый цвет бумаги */
+    border-radius:10px; 
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
     transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    transition: all 1s ease-in-out;
-    
-     /* Центрирование текста внутри листа */
+    opacity:0; 
+    transition:.5s ease-in-out; 
      display:flex; 
      flex-direction:flex-column; 
      align-items:center; 
@@ -68,10 +66,10 @@
  /* Показать лист */
  .letter.show {
    transform: translate(-50%, -50%) scale(1);
-   opacity:1;
+   opacity:1; 
  }
 
- /* Стиль для текста внутри листа */
+ /* Текст внутри листа */
  .letter p {
    margin-bottom:15px; 
    font-size:16px; 
@@ -80,12 +78,13 @@
    text-align:center; 
  }
 
- /* Стиль для изображения внутри текста */
+ /* Изображения внутри текста — уменьшены и с отступами */
  .letter img {
-   max-width:100%; /* чтобы не выходило за границы блока */
+   max-width:80px; /* уменьшено в несколько раз (было максимум по ширине) */
    height:auto; 
    margin-top:10px; 
-   border-radius:8px; /* немного скруглить углы по желанию */
+   margin-bottom:10px; 
+   border-radius:8px; /* скругление углов по желанию */
  }
 
  /* Кнопки для вариантов ответа */
@@ -124,14 +123,17 @@
  <h2>Закрытый конверт</h2>
 </div>
 
-<!-- Лист с текстом и изображением -->
+<!-- Лист с текстом и изображениями -->
 <div class="letter" id="letterText">
- <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
- <!-- Добавляем изображение сюда -->
+ <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок.</p>
+ <!-- Первое изображение -->
+ <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Фон" />
+ <p>Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
+ <!-- Второе изображение -->
  <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Фон" />
 </div>
 
-<!-- Лист с вопросом и ответами -->
+<!-- Вопрос и кнопки -->
 <div class="letter" id="questionSheet">
  <p>Вы будете присутствовать?</p>
  <div class="buttons">
