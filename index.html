@@ -11,25 +11,24 @@
     background: linear-gradient(135deg, #87CEFA, #ADD8E6); /* Голубой градиент */
     font-family: 'Arial', sans-serif;
     display: flex;
-    flex-direction: row; /* Сделать сайт горизонтальным */
+    flex-direction: column; /* Вертикально */
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 100vh;
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
   }
 
-  /* Добавляем стиль для фона музыки, чтобы она не мешала */
+  /* Скрываем музыку */
   #backgroundMusic {
     display: none; /* скрываем элемент */
   }
 
   .main-content {
     width: 100%;
-    max-width: 600px; /* увеличил ширину для горизонтальной ориентации */
+    max-width: 600px; /* максимум ширины */
     text-align: center;
-    margin-left: 20px; /* немного отступа слева */
   }
 
   h1 {
@@ -37,76 +36,73 @@
     margin-bottom: 20px;
   }
 
-  /* Обертка для конверта */
+  /* Обертка для конверта — занимает весь экран на мобильных */
   .envelope-wrapper {
-    width: 300px; /* фиксированная ширина для горизонтальной ориентации */
-    aspect-ratio: 3/2; /* соотношение сторон для мобильных устройств */
-    perspective: 1000px; /* добавляем глубину для анимации */
-    cursor: pointer; /* чтобы было понятно, что можно взаимодействовать */
-    position: relative;
-    margin:auto;
+    width: 100vw; /* вся ширина экрана */
+    height: calc(100vh - 80px); /* почти вся высота минус отступы/заголовок */
+    perspective: 1000px; 
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
 
   /* Сам конверт */
   .envelope {
-    width: 100%;
-    height: auto;
+    width:90%; /* чуть меньше ширины экрана */
+    height:auto; 
+    max-height:90%; /* чтобы не выходил за границы */
+    aspect-ratio:3/2; /* соотношение сторон для мобильных устройств */
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1s ease;
-    cursor:pointer; /* курсор при наведении */
-  }
+   cursor:pointer; 
+   display:flex; 
+   flex-direction:column; 
+   align-items:center; 
+   justify-content:center; 
+   background:#fff; 
+   border-radius:10px; 
+   box-shadow:0 4px 12px rgba(0,0,0,0.3);
+   padding:10px;
+   box-sizing:border-box;
+ }
 
-  /* Верхняя часть конверта (крышка) */
-  .flap {
-    position: absolute;
-    top: -10%; /* подняли чуть выше для эффекта открытия */
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background-color: #d2691e; /* коричневый цвет */
-    border-bottom: 2px solid #8b4513; /* граница */
-    transform-origin: top; /* точка вращения — верхняя часть */
-    transition: transform 1s ease;
-
+ /* Верхняя часть конверта (крышка) */
+ .flap {
+   width:100%;
+   height:auto;
+   background-color:#d2691e; /* коричневый цвет */
+   border-bottom:2px solid #8b4513; 
    font-weight:bold; 
    color:#fff; 
    font-family:'Arial',sans-serif; 
    font-size:1em; 
    user-select:none; 
-   
    cursor:pointer; 
-   
    padding:10px;
-   box-sizing:border-box;
-   text-align:center;
+   border-radius-top-left:10px;border-top-right-radius:10px;
+ }
+
+ /* Контент внутри конверта (само письмо) */
+ .envelope-content {
+   margin-top:-10px; 
+   width:auto; 
+   max-width:100%; 
+   background:#fff; 
+   border-radius:8px; 
+   box-shadow:0 4px 8px rgba(0,0,0,0.2); 
+   padding:20px; 
+   box-sizing:border-box; 
+   opacity:0; /* скрыто по умолчанию */
+   transition:.5s ease-in-out all;
+
+   display:flex; 
+   flex-direction:column;
+
+   align-items:center;
 
  }
   
-/* Контент внутри конверта (само письмо) */
-.envelope-content {
- position:absolute; 
- top:-10%; 
- left:-10%; 
- width:120%; 
- background:#fff; 
- border-radius:8px; 
- box-shadow:0 4px 8px rgba(0,0,0,0.2); 
- padding:20px; 
- box-sizing:border-box; 
- z-index:-1; /* по умолчанию под крышкой */ 
- opacity:0; /* скрыто по умолчанию */
- transition:.5s ease-in-out all;
-
- display:flex; 
- flex-direction:column; 
-
- align-items:center;
-
- font-family:'Arial',sans-serif;
-
-}
-
 /* Открытие крышки при активном состоянии (через класс) */
 .envelope.open .flap {
  transform-origin: top;
@@ -116,18 +112,18 @@
 /* Показ содержимого при открытии */
 .envelope.open .envelope-content {
  opacity:1;
- z-index:auto;
 }
 
 /* Стиль текста внутри письма */
 .message {
  margin-top:-10px; 
  font-size:1.2em; 
- color:#333; 
+ color:#333;
 
 }
 
-/* Адаптивные стили для кнопок и текста вопросов */
+/* Вопросы и кнопки — адаптивно по центру */
+
 #question {
  margin-top:px-15px ;
  font-weight:bold;
@@ -165,6 +161,15 @@ button:hover {
  opacity:0 !important;
  transition:.5s opacity ease-in-out;
 }
+
+/* Адаптивность для мобильных устройств */
+@media(max-width:600px){
+ .envelope {
+     aspect-ratio:auto !important;
+     height:auto !important;
+     max-height:none !important;
+ }
+}
 </style>
 </head>
 <body>
@@ -181,26 +186,28 @@ button:hover {
 <div class="envelope-wrapper" id="envelopeWrapper">
  <div class="envelope" id="envelope">
    <div class="flap" id="flap">Нажми, чтобы открыть письмо</div>
-   <div class="envelope-content" id="content">
-     <div class="message" id="messageContent">
-       <h2>Гимназия №42 г. Пенза</h2>
-       <p>Дорогой учитель!<br><br>
-       Ты приглашён на особое мероприятие в нашей гимназии!<br><br>
-       Ждём тебя с нетерпением!</p>
-       <!-- Вставляем изображение гимназии -->
-       <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Гимназия №42 г. Пенза" style="max-width:100%; height:auto; border-radius:8px;margin-top:px;">
-     </div>
-     <!-- Вопросы скрыты по умолчанию -->
-     <div id="questionContainer" style="display:none;">
-       <div id="question">Вы будете присутствовать?</div>
-       <div class="answer-buttons">
-         <button id="yesBtn">Да</button>
-         <button id="noBtn">Нет</button>
+   
+     <div class="envelope-content" id="content">
+       <div class="message" id="messageContent">
+         <h2>Гимназия №42 г. Пенза</h2>
+         <p>Дорогой учитель!<br><br>
+         Ты приглашён на особое мероприятие в нашей гимназии!<br><br>
+         Ждём тебя с нетерпением!</p>
+         <!-- Вставляем изображение гимназии -->
+         <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Гимназия №42 г. Пенза" style="max-width:100%; height:auto;border-radius:8px;margin-top:px;">
        </div>
+       <!-- Вопросы скрыты по умолчанию -->
+       <div id="questionContainer" style="display:none;">
+         <div id="question">Вы будете присутствовать?</div>
+         <div class="answer-buttons">
+           <button id="yesBtn">Да</button>
+           <button id="noBtn">Нет</button>
+         </div>
+       </div>
+       <!-- Благодарственное сообщение после выбора -->
+       <div id="thankYouMessage" style="display:none;font-size:1.3em;margin-top:px;text-align:center;"></div>
      </div>
-     <!-- Благодарственное сообщение после выбора -->
-     <div id="thankYouMessage" style="display:none;font-size:1.3em;margin-top:px;text-align:center;"></div>
-   </div>
+   
  </div>
 </div>
 
