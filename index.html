@@ -7,11 +7,16 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    /* Добавляем фоновое изображение */
+    background-image: url('https://gymnasium42.edu-penza.ru/documents/image.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
   }
 
   /* Стиль для конверта */
@@ -53,21 +58,28 @@
     opacity: 0;
     transition: all 1s ease-in-out;
     z-index: 10; /* поверх конверта */
-  }
-
-  /* Показать лист */
-  .letter.show {
-    transform: translate(-50%, -50%) scale(1);
-    opacity:1;
-  }
-
-  /* Стиль для текста внутри листа */
-  .letter p {
-    margin-bottom:15px; 
-      font-size:16px; 
-      line-height:1.5; 
-      color:#333; 
+    
+     /* Центрирование текста внутри листа */
+     display:flex; 
+     flex-direction:flex-column; 
+     align-items:center; 
+     justify-content:center; 
 }
+
+ /* Показать лист */
+ .letter.show {
+   transform: translate(-50%, -50%) scale(1);
+   opacity:1;
+ }
+
+ /* Стиль для текста внутри листа */
+ .letter p {
+   margin-bottom:15px; 
+   font-size:16px; 
+   line-height:1.5; 
+   color:#333; 
+   text-align:center; 
+ }
 
  /* Кнопки для вариантов ответа */
  .buttons {
@@ -139,10 +151,10 @@ envelope.addEventListener('click', () => {
      // Плавное появление текста
      letterText.classList.add('show');
      
-     // После появления текста показываем вопрос
+     // Увеличиваем промежуток перед вопросом (например, до 2 секунд)
      setTimeout(() => {
        questionSheet.classList.add('show');
-     }, letterDuration); // задержка перед появлением вопроса
+     }, letterDuration *2); // задержка перед появлением вопроса (увеличена)
      
      
      
