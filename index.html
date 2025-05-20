@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Конверт с анимацией</title>
+<title>Конверт с анимацией и изображением</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -45,7 +45,7 @@
 
   /* Лист с текстом */
   .letter {
-    position: absolute;
+    position: absolute; /* чтобы было поверх конверта */
     top: 50%;
     left: 50%;
     width: 80%;
@@ -57,7 +57,6 @@
     transform: translate(-50%, -50%) scale(0);
     opacity: 0;
     transition: all 1s ease-in-out;
-    z-index: 10; /* поверх конверта */
     
      /* Центрирование текста внутри листа */
      display:flex; 
@@ -79,6 +78,14 @@
    line-height:1.5; 
    color:#333; 
    text-align:center; 
+ }
+
+ /* Стиль для изображения внутри текста */
+ .letter img {
+   max-width:100%; /* чтобы не выходило за границы блока */
+   height:auto; 
+   margin-top:10px; 
+   border-radius:8px; /* немного скруглить углы по желанию */
  }
 
  /* Кнопки для вариантов ответа */
@@ -117,9 +124,11 @@
  <h2>Закрытый конверт</h2>
 </div>
 
-<!-- Лист с текстом -->
+<!-- Лист с текстом и изображением -->
 <div class="letter" id="letterText">
  <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
+ <!-- Добавляем изображение сюда -->
+ <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Фон" />
 </div>
 
 <!-- Лист с вопросом и ответами -->
@@ -136,32 +145,24 @@ const envelope = document.getElementById('envelope');
 const letterText = document.getElementById('letterText');
 const questionSheet = document.getElementById('questionSheet');
 
-const letterDuration = 1000; // время анимации открытия в мс
+const letterDuration = 1000;
 
-// Обработчик клика по конверту
 envelope.addEventListener('click', () => {
   
-  // Добавляем класс для эффекта открытия
   envelope.classList.add('open');
 
   
-  // После короткой задержки показываем первый лист
   setTimeout(() => {
     
-     // Плавное появление текста
      letterText.classList.add('show');
      
-     // Увеличиваем промежуток перед вопросом (например, до 2 секунд)
      setTimeout(() => {
        questionSheet.classList.add('show');
-     }, letterDuration *2); // задержка перед появлением вопроса (увеличена)
+     }, letterDuration *2);
      
-     
-     
- }, letterDuration); // задержка после открытия конверта
+ }, letterDuration);
 });
   
-// Обработчики кнопок
 document.getElementById('yesBtn').addEventListener('click', () => {
  alert("Спасибо! Мы рады вашему присутствию.");
 });
