@@ -4,11 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Приглашение с конвертом</title>
-<!-- Подключение шрифта Google Fonts для более стильного вида -->
+<!-- Подключение шрифта Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body {
-    background: linear-gradient(135deg, #89f7fe, #66a6ff); /* Мягкий голубой градиент */
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
     font-family: 'Roboto', sans-serif;
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@
     padding: 20px;
   }
 
-  /* Скрываем музыку */
+  /* Музыка скрыта */
   #backgroundMusic {
     display: none;
   }
@@ -64,6 +64,8 @@
  border-radius:15px;
  box-shadow:0 8px 20px rgba(0,0,0,0.2);
  overflow:hidden;
+ /* Добавим начальную позицию для анимации */
+ transform-origin: bottom center;
 }
 
 .flap {
@@ -143,23 +145,38 @@ button:hover {
  transform : scale(1.05);
 }
 
-/* Эффект исчезновения для сообщений и вопросов при выборе */
+/* Анимация открытия конверта */
+.envelope.open {
+ transform-origin: bottom center !important; /* точка вращения снизу */
+ transform-box: fill-box !important; /* для совместимости */
+ animation-name: openEnvelopeAnimation;
+ animation-duration: .8s;
+ animation-fill-mode: forwards;
+/* Можно добавить плавное вращение */
+}
+
+@keyframes openEnvelopeAnimation {
+ from {transform : rotateX(0deg);}
+ to {transform : rotateX(-150deg);}
+}
+
+/* Для плавного закрытия или возврата можно добавить другую анимацию */
+
 .fade-out {
  opacity:0 !important;
  transition:.5s opacity ease-in-out;
 }
 
-/* Адаптивность для мобильных устройств */
+/* Адаптивность */
 @media(max-width:600px){
  .envelope {
-     aspect-ratio:auto !important;
-     height:auto !important;}
+     aspect-ratio:auto !important;}
 }
 </style>
 </head>
 <body>
 
-<!-- Вставляем музыку на фон -->
+<!-- Музыка -->
 <audio autoplay loop id="backgroundMusic">
  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
  Ваш браузер не поддерживает элемент audio.
@@ -178,7 +195,7 @@ button:hover {
          <p>Дорогой учитель!<br><br>
          Ты приглашён на особое мероприятие в нашей гимназии!<br><br>
          Ждём тебя с нетерпением!</p>
-         <!-- Вставляем изображение гимназии -->
+         <!-- Изображение -->
          <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Гимназия №42 г. Пенза" style="max-width:100%; height:auto;border-radius:8px;margin-top:px;">
        </div>
        <!-- Вопросы скрыты по умолчанию -->
@@ -189,23 +206,20 @@ button:hover {
            <button id="noBtn">Нет</button>
          </div>
        </div>
-       <!-- Благодарственное сообщение после выбора -->
+       <!-- Благодарственное сообщение -->
        <div id="thankYouMessage" style="display:none;font-size:1.3em;margin-top:px;text-align:center;"></div>
      </div>
    
  </div>
 </div>
 
-<!-- Нижнее меню убрано -->
-
-</div>
-
+<!-- Скрипт -->
 <script>
-// Переменные состояния
+// Переменные
 let isOpen = false; // открыто ли письмо
 let hasAskedPresence = false;
 
-// Получаем элементы
+// Элементы
 const envelope = document.getElementById('envelope');
 const wrapper = document.getElementById('envelopeWrapper');
 const flap = document.getElementById('flap');
@@ -215,25 +229,22 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const thankYouMsg = document.getElementById('thankYouMessage');
 
-// Обработчик открытия письма
+// Обработчик клика
 wrapper.addEventListener('click', () => {
  if (!isOpen) {
-   // Открываем письмо с плавной анимацией
-   envelope.style.transform = 'rotateX(-20deg)';
-   isOpen = true;
+   // Открываем письмо
+   envelope.classList.add('open'); // добавляем класс для анимации
+   isOpen=true;
 
  } else if (isOpen && !hasAskedPresence) {
-   // После открытия показываем вопрос
    showPresenceQuestion();
  }
 });
 
 // Функция показать вопрос
 function showPresenceQuestion() {
- // скрываем содержимое письма плавно
  messageContent.classList.add('fade-out');
 
- // через полсекунды показываем вопрос
  setTimeout(() => {
    messageContent.style.display='none';
    questionContainer.style.display='block';
@@ -242,31 +253,25 @@ function showPresenceQuestion() {
  hasAskedPresence=true;
 
  // Обработчики кнопок
- document.getElementById('yesBtn').onclick = () => {
-   handleAnswer("Спасибо! Ждем вас на мероприятии.");
- };
- document.getElementById('noBtn').onclick = () => {
-   handleAnswer("Жаль, ну, тогда надеюсь мы ещё встретимся.");
- };
+ document.getElementById('yesBtn').onclick=()=>handleAnswer("Спасибо! Ждем вас на мероприятии.");
+ document.getElementById('noBtn').onclick=()=>handleAnswer("Жаль, ну, тогда надеюсь мы ещё встретимся.");
 }
 
-// Общая функция обработки ответа
+// Обработка ответа
 function handleAnswer(text) {
- const thankMsgDiv = document.createElement('div');
- thankMsgDiv.innerText=text;
- thankMsgDiv.style.fontSize='1.3em';
- thankMsgDiv.style.marginTop='20px';
- thankMsgDiv.style.opacity='0';
- thankMsgDiv.style.transition='opacity .5s ease-in-out';
+ const thankDiv=document.createElement('div');
+ thankDiv.innerText=text;
+ thankDiv.style.fontSize='1.3em';
+ thankDiv.style.marginTop='20px';
+ thankDiv.style.opacity='0';
+ thankDiv.style.transition='opacity .5s ease-in-out';
 
- // вставляем сообщение в блок благодарности
- const container = document.getElementById('thankYouMessage');
- container.innerHTML=''; // очищаем предыдущие сообщения
- container.appendChild(thankMsgDiv);
+ const container=document.getElementById('thankYouMessage');
+ container.innerHTML='';
+ container.appendChild(thankDiv);
  container.style.display='block';
 
- // плавное появление сообщения
- setTimeout(() => { thankMsgDiv.style.opacity='1'; },50);
+ setTimeout(()=>{thankDiv.style.opacity='1';},50);
 }
 </script>
 
