@@ -3,290 +3,53 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Приглашение с конвертом</title>
-<!-- Подключение шрифта Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>Конверт без эффекта переворачивания</title>
 <style>
-  body {
-    background: linear-gradient(135deg, #89f7fe, #66a6ff);
-    font-family: 'Roboto', sans-serif;
+  /* Общие стили для конверта */
+  .envelope {
+    width: 350px;
+    height: auto;
+    max-height: 350px;
+    aspect-ratio: 3/2;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.8s ease-in-out;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
+    justify-content: center;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
   }
 
-  /* Музыка скрыта */
-  #backgroundMusic {
-    display: none;
+  /* Стиль для открытого конверта */
+  .envelope.open {
+    /* Можно добавить стили для состояния "открыто" */
+    /* Например, изменить высоту или прозрачность */
   }
 
-  h1 {
-    font-size: 2.5em;
-    color: #fff;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-    margin-bottom: 30px;
-  }
-
-  .main-content {
-    width: 100%;
-    max-width: 700px;
-    text-align: center;
-  }
-
-  /* Обертка для конверта */
-  .envelope-wrapper {
-    width:350px; 
-    height:auto; 
-   perspective:1500px; 
-   display:flex; 
-   align-items:center; 
-   justify-content:center; 
-}
-
-.envelope {
- width:350px; 
- height:auto; 
- max-height:350px; 
- aspect-ratio:3/2; 
- position: relative; 
- transform-style: preserve-3d; 
- transition:.8s ease-in-out all; 
- cursor:pointer; 
- display:flex; 
- flex-direction:column; 
- align-items:center; 
- justify-content:center; 
- background:#fff;
- border-radius:15px;
- box-shadow:0 8px 20px rgba(0,0,0,0.2);
- overflow:hidden;
- /* Начальная позиция для анимации — закрытый конверт */
- transform-origin: bottom center;
-}
-
-/* Добавим класс для открытого состояния */
-.envelope.open {
- transform-origin: bottom center !important; /* точка вращения снизу */
- transform-box: fill-box !important; /* для совместимости */
- animation-name: openEnvelopeAnimation;
- animation-duration: .8s;
- animation-fill-mode: forwards;
-/* Можно добавить плавное вращение */
-}
-
-.flap {
- width:100%; height:auto;
- background-color:#ff7f50;
- border-bottom:2px solid #e76f51;
- font-weight:bold;
- color:#fff;
- font-family:'Roboto',sans-serif;
- font-size:.95em;
- user-select:none;
- cursor:pointer;
- padding:15px;
- text-align:center;
- transition:.3s background-color ease-in-out, transform .2s ease-in-out ;
-}
-
-.envelope-content {
- margin-top:-10px;
- width:auto;
- max-width:100%;
- background:#fff;
- border-radius:8px;
- box-shadow:0 4px 12px rgba(0,0,0,0.15);
- padding:25px;
- box-sizing:border-box;
-
- opacity:.9;
-
- transition:.3s opacity ease-in-out;
-
-}
-
-.message {
- margin-top:-10px;
-
- font-size:.95em;
-
- color:#333;
-
- line-height:1.4;
-
-}
-
-#question {
- margin-top:px-15px ;
- font-weight:bold;
-
- font-size:.95em;
-
- color:#444;
-
-}
-
-.answer-buttons {
- margin-top:px-15px ;
- display:flex ;
- justify-content:center ;
- gap :15px ;
- flex-wrap:true ;
-}
-
-button {
- padding:.75em 1.5em ;
- font-size:.95em ;
- border-radius:.5em ;
- border:none ;
- cursor:pointer ;
- background-color:#4CAF50 ;
- color:#fff ;
- box-shadow:0 4px 6px rgba(0,0,0,0.1);
- transition:.3s background-color ease-in-out, transform .2s ease-in-out , opacity .5s ease-in-out ;
-}
-
-button:hover {
- background-color:#45a049 ;
- transform : scale(1.05);
-}
-
-/* Анимация открытия конверта */
-@keyframes openEnvelopeAnimation {
- from {transform : rotateX(0deg);}
- to {transform : rotateX(-150deg);}
-}
-
-/* Для плавного закрытия или возврата можно добавить другую анимацию */
-
-.fade-out {
- opacity:0 !important;
- transition:.5s opacity ease-in-out;
-}
-
-/* Адаптивность */
-@media(max-width:600px){
- .envelope {
-     aspect-ratio:auto !important;}
-}
+  /* Дополнительные стили по необходимости */
 </style>
 </head>
 <body>
 
-<!-- Музыка -->
-<audio autoplay loop id="backgroundMusic">
- <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
- Ваш браузер не поддерживает элемент audio.
-</audio>
-
-<div class="main-content">
-<h1>Приглашение</h1>
-
-<div class="envelope-wrapper" id="envelopeWrapper">
- <div class="envelope" id="envelope">
-   <div class="flap" id="flap">Нажми, чтобы открыть письмо</div>
-   
-     <div class="envelope-content" id="content">
-       <div class="message" id="messageContent">
-         <h2 style="margin-top:-10px;">Гимназия №42 г. Пенза</h2>
-         <p>Дорогой учитель!<br><br>
-         Ты приглашён на особое мероприятие в нашей гимназии!<br><br>
-         Ждём тебя с нетерпением!</p>
-         <!-- Изображение -->
-         <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Гимназия №42 г. Пенза" style="max-width:100%; height:auto;border-radius:8px;margin-top:px;">
-       </div>
-       <!-- Вопросы скрыты по умолчанию -->
-       <div id="questionContainer" style="display:none;">
-         <div id="question">Вы будете присутствовать?</div>
-         <div class="answer-buttons">
-           <button id="yesBtn">Да</button>
-           <button id="noBtn">Нет</button>
-         </div>
-       </div>
-       <!-- Благодарственное сообщение -->
-       <div id="thankYouMessage" style="display:none;font-size:1.3em;margin-top:px;text-align:center;"></div>
-     </div>
-   
- </div>
+<div class="envelope" id="myEnvelope">
+  <!-- Внутреннее содержимое конверта -->
+  <h2>Закрытый конверт</h2>
 </div>
 
-<!-- Скрипт -->
 <script>
-// Переменные
-let isOpen = false; // открыто ли письмо
-let hasAskedPresence = false;
+  const envelope = document.getElementById('myEnvelope');
 
-// Элементы
-const envelope = document.getElementById('envelope');
-const wrapper = document.getElementById('envelopeWrapper');
-const flap = document.getElementById('flap');
-const messageContent = document.getElementById('messageContent');
-const questionContainer = document.getElementById('questionContainer');
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const thankYouMsg = document.getElementById('thankYouMessage');
-
-// Функция открыть письмо (анимация)
-function openEnvelope() {
- if (!isOpen) {
-   envelope.classList.add('open'); // добавляем класс для анимации
-   isOpen=true;
-
-   // После завершения анимации можно показать содержимое или оставить как есть
- }
-}
-
-// Обработчик клика
-wrapper.addEventListener('click', () => {
- if (!isOpen) {
-   openEnvelope();
- } else if (isOpen && !hasAskedPresence) {
-   showPresenceQuestion();
- }
-});
-
-// Автоматически открыть конверт при загрузке страницы
-window.addEventListener('load', () => {
- // Запускаем анимацию открытия сразу после загрузки
- openEnvelope();
-});
-
-// Функция показать вопрос
-function showPresenceQuestion() {
- messageContent.classList.add('fade-out');
-
- setTimeout(() => {
-   messageContent.style.display='none';
-   questionContainer.style.display='block';
- },500);
-
- hasAskedPresence=true;
-
- // Обработчики кнопок
- document.getElementById('yesBtn').onclick=()=>handleAnswer("Спасибо! Ждем вас на мероприятии.");
- document.getElementById('noBtn').onclick=()=>handleAnswer("Жаль, ну, тогда надеюсь мы ещё встретимся.");
-}
-
-// Обработка ответа
-function handleAnswer(text) {
- const thankDiv=document.createElement('div');
- thankDiv.innerText=text;
- thankDiv.style.fontSize='1.3em';
- thankDiv.style.marginTop='20px';
- thankDiv.style.opacity='0';
- thankDiv.style.transition='opacity .5s ease-in-out';
-
- const container=document.getElementById('thankYouMessage');
- container.innerHTML='';
- container.appendChild(thankDiv);
- container.style.display='block';
-
- setTimeout(()=>{thankDiv.style.opacity='1';},50);
-}
+  // Обработчик клика для открытия/закрытия
+  envelope.addEventListener('click', () => {
+    envelope.classList.toggle('open');
+    
+    // Можно добавить дополнительные действия при открытии/закрытии
+  });
 </script>
 
 </body>
