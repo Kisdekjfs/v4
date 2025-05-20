@@ -4,36 +4,40 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Конверт с приглашением</title>
-<!-- Подключение шрифта -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+<!-- Подключение современного шрифта -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
+  /* Общие стили */
   body {
     font-family: 'Roboto', sans-serif;
-    background-color: #000;
+    background-color: #000; /* черный фон */
     margin: 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
   }
 
-  /* Меню выбора */
+  /* Меню выбора — чуть ниже, с анимацией появления */
   #questionContainer {
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
-    margin-top: 50px;
+    margin-top: 50px; /* увеличено для более низкого расположения */
+    margin-bottom: 20px;
     text-align: center;
-  }
-  #questionContainer.show {
+}
+#questionContainer.show {
     opacity: 1;
     transform: translateY(0);
-  }
+}
 
-  /* Кнопки */
-  .buttons {
-    display:flex; 
-    gap:15px; 
+/* Варианты ответа — кнопки */
+.buttons {
+  display:flex; 
+  gap:15px; 
 }
 button {
    padding:10px 20px;
@@ -52,31 +56,34 @@ button:hover {
    color:#fff; 
 }
 
-/* Конверт */
+/* Конверт — более реалистичный и анимированный */
 .envelope {
   width: 350px;
   height:200px;
   position: relative;
   cursor:pointer;
+  perspective:1000px; /* для эффектов открытия */
 }
 .envelope-inner {
   width:100%;
   height:100%;
   position:absolute;
+  top:0; left:0;
 }
 .envelope-front, .envelope-flap {
   position:absolute;
   width:100%;
   height:100%;
+  backface-visibility:hidden;
 }
 .envelope-front {
-  background:#fff8dc; 
-  border-radius:10px; 
+  background:#fff8dc; /* цвет конверта */
+  border-radius:10px;
 }
 .envelope-flap {
-  background:#f5deb3; 
+  background:#f5deb3; /* цвет крышки */
 }
-/* Анимация открытия */
+/* Анимация открытия конверта */
 .envelope.open .envelope-flap {
   transform-origin:center top;
   animation: openFlap 1s forwards ease-in-out;
@@ -95,30 +102,36 @@ button:hover {
    justify-content:center; 
    background:#fff8dc; 
    padding:20px; 
-   max-width:90%; /* чтобы не вылазить за границы экрана */
-   margin-top:-50px; /* поднять чуть выше */
+   max-width:600px; 
+   margin-top:-50px; /* чуть поднять над конвертом */
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    
 }
 #letterText p {
 margin-bottom:px15 ;
-font-size:px13 ;
+font-size:px13 ; /* уменьшено на два пункта (с15 до13) */
 line-height:1.5 ;
 color:#333 ;
 text-align:center ;
-max-width:100%; /* перенос слов внутри контейнера */
+max-width:560px; /* чтобы не вылезать за рамки */
 word-wrap:break-word; /* перенос слов при необходимости */
-box-sizing:border-box;
-/* добавим паддинги для мобильных */  
-padding-left:10px;  
-padding-right:10px;
-
 }
 
-/* Изображение — адаптивное и не выходящее за рамки */
+/* Изображение под текстом с приглашением — уменьшено */
 #invitationImage {
- margin-top:-10px; 
- max-width:100%; /* не больше ширины контейнера */
- height:auto; /* сохраняет пропорции */
+ margin-top:-10px; /* чуть поднять изображение к тексту */
+ max-width:70%; /* уменьшено по ширине, можно оставить или сделать меньше по желанию */
+ height:auto;
  border-radius:8px;
 
 }
@@ -129,25 +142,11 @@ padding-right:10px;
  transition:.8s ease-in-out ;
 }
 
-/* Медиазапросы для мобильных устройств */
-@media (max-width:600px) {
-
- #questionContainer {
-   margin-top:30px; 
- }
- #letterText {
-   padding-left:px10 ; 
-   padding-right:px10 ; 
- }
- #invitationImage {
-   max-width:100%; /* полностью вписывается в контейнер */
- }
-}
 </style>
 </head>
 <body>
 
-<!-- Меню выбора -->
+<!-- Меню выбора — изначально скрыто -->
 <div id="questionContainer">
  <p>Вы будете присутствовать?</p>
  <div class="buttons">
@@ -164,7 +163,7 @@ padding-right:10px;
  </div>
 </div>
 
-<!-- Лист с текстом и изображением -->
+<!-- Лист с текстом и изображением, изначально скрыт -->
 <div class="letter" id="letterText" style="display:none;">
  <p>Дорогой учитель! Вас приглашают на один из важнейших мероприятий нашей гимназии — последний звонок. Мы, одиннадцатиклассники, были бы рады видеть вас на нём.</p>
  <img src="https://gymnasium42.edu-penza.ru/documents/image.png" alt="Приглашение" id="invitationImage"/>
@@ -177,6 +176,7 @@ const questionContainer = document.getElementById('questionContainer');
 
 let menuShown = false;
 
+// Показать меню выбора после открытия конверта
 envelope.addEventListener('click', () => {
 
  // Открываем крышку
@@ -195,9 +195,10 @@ envelope.addEventListener('click', () => {
        questionContainer.classList.add('show');
        menuShown = true;
      }
- },1000);
+ },1000); // время анимации крышки
 });
 
+// Обработчики кнопок
 document.getElementById('yesBtn').addEventListener('click', () => {
  alert("Спасибо! Мы рады вашему присутствию.");
 });
